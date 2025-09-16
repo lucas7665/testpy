@@ -15,7 +15,7 @@ services:
       - GITEA__database__DB_TYPE=sqlite3
     restart: always
     volumes:
-      - gitea_data:/data
+      - ~/docker-data/gitea:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
@@ -28,5 +28,3 @@ networks:
   gitea:
     external: false
 
-volumes:
-  gitea_data:
