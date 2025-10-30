@@ -196,6 +196,89 @@
             border-left: 5px solid #6366f1;
         }
 
+        .signal-history {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .signal-history-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .signal-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+
+        .signal-table thead {
+            background: #f3f4f6;
+        }
+
+        .signal-table th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .signal-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .signal-table tr:hover {
+            background: #f9fafb;
+        }
+
+        .signal-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .signal-badge-buy {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .signal-badge-strong-buy {
+            background: #10b981;
+            color: white;
+        }
+
+        .signal-badge-sell {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .signal-badge-strong-sell {
+            background: #ef4444;
+            color: white;
+        }
+
+        .signal-badge-hold {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .price-up {
+            color: #10b981;
+        }
+
+        .price-down {
+            color: #ef4444;
+        }
+
         .loading {
             text-align: center;
             padding: 50px;
@@ -287,6 +370,30 @@
                 <div class="signal-icon" id="signal-icon">⏳</div>
                 <div class="signal-text" id="signal-text">等待信号...</div>
                 <div class="signal-description" id="signal-description">正在分析市场数据...</div>
+            </div>
+
+            <!-- 信号记录历史 -->
+            <div class="signal-history">
+                <div class="signal-history-title">📋 信号记录（最近20条）</div>
+                <table class="signal-table">
+                    <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>价格</th>
+                            <th>RSI6</th>
+                            <th>RSI12</th>
+                            <th>RSI24</th>
+                            <th>信号</th>
+                        </tr>
+                    </thead>
+                    <tbody id="signal-history-body">
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 20px; color: #9ca3af;">
+                                正在加载信号记录...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <!-- 价格图表 -->
@@ -436,6 +543,87 @@
             }
         }
 
+        // 判断信号类型
+        function getSignalType(rsi6, rsi12) {
+            if (rsi6 < 30) {
+                if (rsi12 < 40) {
+                    return { type: 'strong-buy', text: '强烈买入', icon: '🔔🔔' };
+                } else {
+                    return { type: 'buy', text: '买入信号', icon: '🔔' };
+                }
+            } else if (rsi6 > 70) {
+                if (rsi12 > 60) {
+                    return { type: 'strong-sell', text: '强烈卖出', icon: '⚠️⚠️' };
+                } else {
+                    return { type: 'sell', text: '卖出信号', icon: '⚠️' };
+                }
+            } else {
+                return { type: 'hold', text: '观望', icon: '⏳' };
+            }
+        }
+
+        // 更新信号历史表格
+        function updateSignalHistory(chartData) {
+            const tbody = document.getElementById('signal-history-body');
+            tbody.innerHTML = '';
+
+            // 获取最近20条数据
+            const dataLength = chartData.close.length;
+            const startIdx = Math.max(0, dataLength - 20);
+            
+            let hasSignals = false;
+
+            for (let i = dataLength - 1; i >= startIdx; i--) {
+                const time = chartData.time[i];
+                const price = chartData.close[i];
+                const rsi6 = chartData.rsi6[i];
+                const rsi12 = chartData.rsi12[i];
+                const rsi24 = chartData.rsi24[i];
+
+                if (rsi6 === null || rsi6 === undefined) continue;
+
+                const signal = getSignalType(rsi6, rsi12);
+                
+                // 只显示买入和卖出信号，不显示观望
+                if (signal.type === 'hold') continue;
+
+                hasSignals = true;
+
+                const row = document.createElement('tr');
+                
+                // 价格颜色
+                let priceClass = '';
+                if (i > 0 && chartData.close[i-1]) {
+                    priceClass = price > chartData.close[i-1] ? 'price-up' : 'price-down';
+                }
+
+                row.innerHTML = `
+                    <td>${time}</td>
+                    <td class="${priceClass}">${price ? price.toFixed(2) : '-'}</td>
+                    <td>${rsi6 ? rsi6.toFixed(2) : '-'}</td>
+                    <td>${rsi12 ? rsi12.toFixed(2) : '-'}</td>
+                    <td>${rsi24 ? rsi24.toFixed(2) : '-'}</td>
+                    <td>
+                        <span class="signal-badge signal-badge-${signal.type}">
+                            ${signal.icon} ${signal.text}
+                        </span>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            }
+
+            if (!hasSignals) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 20px; color: #9ca3af;">
+                            暂无交易信号
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
         // 更新交易信号
         function updateSignal(rsi6, rsi12) {
             const signalBox = document.getElementById('signal-box');
@@ -507,8 +695,11 @@
                 // 更新交易信号
                 updateSignal(current.rsi6, current.rsi12);
 
-                // 更新图表
+                // 更新信号历史
                 const chart = data.chart;
+                updateSignalHistory(chart);
+
+                // 更新图表
                 
                 // 价格图表
                 priceChart.data.labels = chart.time;
