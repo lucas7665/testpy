@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标准体系管理 - 标准化智能服务平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        /* 导航栏 */
+        .header {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1890ff;
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .nav-menu a.active {
+            color: #1890ff;
+            font-weight: 500;
+        }
+        
+        /* 主要内容 */
+        .main-container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+        }
+        
+        /* 左侧树形结构 */
+        .tree-panel {
+            width: 400px;
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+        
+        .tree-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        .tree-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .tree-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 6px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            background: #1890ff;
+            color: #fff;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        /* 树形结构 */
+        .tree {
+            list-style: none;
+        }
+        
+        .tree-node {
+            margin-bottom: 5px;
+        }
+        
+        .tree-node-content {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tree-node-content:hover {
+            background: #f0f0f0;
+        }
+        
+        .tree-node-content.selected {
+            background: #e6f7ff;
+            color: #1890ff;
+        }
+        
+        .tree-toggle {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .tree-icon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        .tree-label {
+            flex: 1;
+            font-size: 14px;
+        }
+        
+        .tree-count {
+            font-size: 12px;
+            color: #999;
+            margin-left: 8px;
+        }
+        
+        .tree-children {
+            margin-left: 28px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .tree-node.expanded > .tree-children {
+            display: block;
+        }
+        
+        /* 右侧内容区 */
+        .content-panel {
+            flex: 1;
+            background: #fff;
+            border-radius: 8px;
+            padding: 30px;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        .content-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .content-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: #1890ff;
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background: #40a9ff;
+        }
+        
+        /* 节点编辑表单 */
+        .edit-form {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #1890ff;
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        /* 标准列表 */
+        .standards-list {
+            margin-top: 30px;
+        }
+        
+        .standards-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .standards-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .standard-item {
+            padding: 15px;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .standard-item:hover {
+            border-color: #1890ff;
+            box-shadow: 0 2px 8px rgba(24,144,255,0.1);
+        }
+        
+        .standard-info {
+            flex: 1;
+        }
+        
+        .standard-number {
+            font-size: 16px;
+            color: #1890ff;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .standard-name {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .standard-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            border: 1px solid #e8e8e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fff;
+        }
+        
+        .action-icon:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state-text {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">标准化智能服务平台</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="search.html">标准查询</a></li>
+                    <li><a href="ai-workspace.html">AI服务</a></li>
+                    <li><a href="system.html" class="active">标准体系</a></li>
+                    <li><a href="#">标准服务</a></li>
+                    <li><a href="#">关于我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <div class="main-container">
+        <!-- 左侧树形结构 -->
+        <aside class="tree-panel">
+            <div class="tree-header">
+                <div class="tree-title">标准体系结构</div>
+                <div class="tree-actions">
+                    <button class="btn btn-secondary">导入</button>
+                    <button class="btn btn-secondary">导出</button>
+                </div>
+            </div>
+            <ul class="tree">
+                <li class="tree-node expanded">
+                    <div class="tree-node-content selected">
+                        <span class="tree-toggle" onclick="toggleNode(this)">▼</span>
+                        <span class="tree-icon">📁</span>
+                        <span class="tree-label">质量管理体系</span>
+                        <span class="tree-count">(25)</span>
+                    </div>
+                    <ul class="tree-children">
+                        <li class="tree-node expanded">
+                            <div class="tree-node-content">
+                                <span class="tree-toggle" onclick="toggleNode(this)">▼</span>
+                                <span class="tree-icon">📁</span>
+                                <span class="tree-label">基础标准</span>
+                                <span class="tree-count">(5)</span>
+                            </div>
+                            <ul class="tree-children">
+                                <li class="tree-node">
+                                    <div class="tree-node-content">
+                                        <span class="tree-toggle"></span>
+                                        <span class="tree-icon">📄</span>
+                                        <span class="tree-label">GB/T 19000</span>
+                                        <span class="tree-count">(1)</span>
+                                    </div>
+                                </li>
+                                <li class="tree-node">
+                                    <div class="tree-node-content">
+                                        <span class="tree-toggle"></span>
+                                        <span class="tree-icon">📄</span>
+                                        <span class="tree-label">GB/T 19004</span>
+                                        <span class="tree-count">(1)</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="tree-node">
+                            <div class="tree-node-content">
+                                <span class="tree-toggle" onclick="toggleNode(this)">▶</span>
+                                <span class="tree-icon">📁</span>
+                                <span class="tree-label">要求标准</span>
+                                <span class="tree-count">(8)</span>
+                            </div>
+                        </li>
+                        <li class="tree-node">
+                            <div class="tree-node-content">
+                                <span class="tree-toggle" onclick="toggleNode(this)">▶</span>
+                                <span class="tree-icon">📁</span>
+                                <span class="tree-label">指南标准</span>
+                                <span class="tree-count">(12)</span>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="tree-node">
+                    <div class="tree-node-content">
+                        <span class="tree-toggle" onclick="toggleNode(this)">▶</span>
+                        <span class="tree-icon">📁</span>
+                        <span class="tree-label">环境管理体系</span>
+                        <span class="tree-count">(15)</span>
+                    </div>
+                </li>
+                <li class="tree-node">
+                    <div class="tree-node-content">
+                        <span class="tree-toggle" onclick="toggleNode(this)">▶</span>
+                        <span class="tree-icon">📁</span>
+                        <span class="tree-label">职业健康安全管理体系</span>
+                        <span class="tree-count">(12)</span>
+                    </div>
+                </li>
+            </ul>
+            <div style="margin-top: 20px;">
+                <button class="btn btn-primary" style="width: 100%;">+ 添加一级分类</button>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区 -->
+        <main class="content-panel">
+            <div class="content-header">
+                <div class="content-title">基础标准</div>
+                <div class="content-actions">
+                    <button class="btn btn-secondary">+ 添加标准</button>
+                    <button class="btn btn-secondary">批量导入</button>
+                </div>
+            </div>
+
+            <!-- 节点编辑表单 -->
+            <div class="edit-form">
+                <div class="form-group">
+                    <label class="form-label">分类名称</label>
+                    <input type="text" class="form-input" value="基础标准">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">分类描述</label>
+                    <textarea class="form-input form-textarea">质量管理体系的基础标准和术语定义，为质量管理体系的理解和应用提供基础。</textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary">保存修改</button>
+                    <button class="btn btn-secondary">取消</button>
+                </div>
+            </div>
+
+            <!-- 标准列表 -->
+            <div class="standards-list">
+                <div class="standards-header">
+                    <div class="standards-title">包含的标准 (5)</div>
+                </div>
+                <div class="standard-item">
+                    <div class="standard-info">
+                        <div class="standard-number">GB/T 19000-2016</div>
+                        <div class="standard-name">质量管理体系 基础和术语</div>
+                    </div>
+                    <div class="standard-actions">
+                        <div class="action-icon" title="查看详情">👁️</div>
+                        <div class="action-icon" title="编辑">✏️</div>
+                        <div class="action-icon" title="删除">🗑️</div>
+                    </div>
+                </div>
+                <div class="standard-item">
+                    <div class="standard-info">
+                        <div class="standard-number">GB/T 19004-2011</div>
+                        <div class="standard-name">追求组织的持续成功 质量管理方法</div>
+                    </div>
+                    <div class="standard-actions">
+                        <div class="action-icon" title="查看详情">👁️</div>
+                        <div class="action-icon" title="编辑">✏️</div>
+                        <div class="action-icon" title="删除">🗑️</div>
+                    </div>
+                </div>
+                <div class="standard-item">
+                    <div class="standard-info">
+                        <div class="standard-number">GB/T 19011-2021</div>
+                        <div class="standard-name">管理体系审核指南</div>
+                    </div>
+                    <div class="standard-actions">
+                        <div class="action-icon" title="查看详情">👁️</div>
+                        <div class="action-icon" title="编辑">✏️</div>
+                        <div class="action-icon" title="删除">🗑️</div>
+                    </div>
+                </div>
+                <div class="standard-item">
+                    <div class="standard-info">
+                        <div class="standard-number">GB/T 19012-2019</div>
+                        <div class="standard-name">质量管理 顾客满意 组织投诉处理指南</div>
+                    </div>
+                    <div class="standard-actions">
+                        <div class="action-icon" title="查看详情">👁️</div>
+                        <div class="action-icon" title="编辑">✏️</div>
+                        <div class="action-icon" title="删除">🗑️</div>
+                    </div>
+                </div>
+                <div class="standard-item">
+                    <div class="standard-info">
+                        <div class="standard-number">GB/T 19013-2009</div>
+                        <div class="standard-name">质量管理 顾客满意 组织外部争议解决指南</div>
+                    </div>
+                    <div class="standard-actions">
+                        <div class="action-icon" title="查看详情">👁️</div>
+                        <div class="action-icon" title="编辑">✏️</div>
+                        <div class="action-icon" title="删除">🗑️</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleNode(element) {
+            const node = element.closest('.tree-node');
+            const toggle = node.querySelector('.tree-toggle');
+            const children = node.querySelector('.tree-children');
+            
+            if (node.classList.contains('expanded')) {
+                node.classList.remove('expanded');
+                toggle.textContent = '▶';
+            } else {
+                node.classList.add('expanded');
+                toggle.textContent = '▼';
+            }
+        }
+
+        // 节点点击选中
+        document.querySelectorAll('.tree-node-content').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (e.target.classList.contains('tree-toggle')) return;
+                
+                document.querySelectorAll('.tree-node-content').forEach(node => {
+                    node.classList.remove('selected');
+                });
+                this.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
+

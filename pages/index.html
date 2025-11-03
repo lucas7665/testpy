@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标准化智能服务平台 - 首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 顶部导航 */
+        .header {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1890ff;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: #1890ff;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: #1890ff;
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background: #40a9ff;
+        }
+        
+        .btn-outline {
+            border: 1px solid #1890ff;
+            color: #1890ff;
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background: #1890ff;
+            color: #fff;
+        }
+        
+        /* Banner区 */
+        .banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .banner h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .banner p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        /* 核心功能入口 */
+        .features {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+            border-color: #1890ff;
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #fff;
+        }
+        
+        .feature-card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .feature-card p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* 搜索区 */
+        .search-section {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #1890ff;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .search-btn {
+            padding: 15px 40px;
+            background: #1890ff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .quick-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .quick-link {
+            padding: 8px 20px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .quick-link:hover {
+            background: #1890ff;
+            color: #fff;
+        }
+        
+        /* 产品亮点 */
+        .highlights {
+            background: #f5f5f5;
+            padding: 60px 20px;
+        }
+        
+        .highlights-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 50px;
+            color: #333;
+        }
+        
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        
+        .highlight-item {
+            text-align: center;
+        }
+        
+        .highlight-icon {
+            font-size: 48px;
+            color: #1890ff;
+            margin-bottom: 20px;
+        }
+        
+        .highlight-item h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .highlight-item p {
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        /* 服务介绍 */
+        .services {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .service-card {
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .service-image {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 60px;
+        }
+        
+        .service-content {
+            padding: 25px;
+        }
+        
+        .service-content h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .service-content p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        
+        .service-link {
+            color: #1890ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        /* 底部 */
+        .footer {
+            background: #2c3e50;
+            color: #fff;
+            padding: 50px 20px 20px;
+            margin-top: 80px;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+        
+        .footer-section h4 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: #fff;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #34495e;
+            color: #95a5a6;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">标准化智能服务平台</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="search.html">标准查询</a></li>
+                    <li><a href="ai-workspace.html">AI服务</a></li>
+                    <li><a href="system.html">标准体系</a></li>
+                    <li><a href="#services">标准服务</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                </ul>
+            </nav>
+            <div class="nav-buttons">
+                <a href="#" class="btn btn-outline">登录</a>
+                <a href="#" class="btn btn-primary">免费注册</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner区 -->
+    <section class="banner">
+        <h1>智能化标准化服务平台</h1>
+        <p>AI驱动的标准化全流程服务，让标准管理更简单、更智能</p>
+    </section>
+
+    <!-- 核心功能入口 -->
+    <section class="features">
+        <h2 class="section-title">核心功能</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>标准查询</h3>
+                <p>覆盖国标、行标、地标等全量标准库，快速精准查询</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI智能服务</h3>
+                <p>标准评估、智能编写、审校、问答，AI助力标准化工作</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>标准体系</h3>
+                <p>可视化标准体系创建与管理，多级分类树形结构</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <h3>查新查重</h3>
+                <p>标准查新、查重服务，确保标准有效性和原创性</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 搜索区 -->
+    <section class="search-section">
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="输入标准号或标准名称，如：GB/T 19001-2016">
+            <button class="search-btn">搜索</button>
+        </div>
+        <div class="quick-links">
+            <a href="#" class="quick-link">国家标准（GB）</a>
+            <a href="#" class="quick-link">行业标准（HB/JB/QB）</a>
+            <a href="#" class="quick-link">地方标准（DB）</a>
+            <a href="#" class="quick-link">团体标准（T）</a>
+            <a href="#" class="quick-link">ISO国际标准</a>
+        </div>
+    </section>
+
+    <!-- 产品亮点 -->
+    <section class="highlights">
+        <div class="highlights-container">
+            <h2 class="section-title">产品亮点</h2>
+            <div class="highlights-grid">
+                <div class="highlight-item">
+                    <div class="highlight-icon">🧠</div>
+                    <h3>AI智能驱动</h3>
+                    <p>基于大语言模型的智能评估、编写、审校功能，大幅提升工作效率，减少人工错误</p>
+                </div>
+                <div class="highlight-item">
+                    <div class="highlight-icon">📚</div>
+                    <h3>标准库全面覆盖</h3>
+                    <p>涵盖国家标准、行业标准、地方标准、团体标准、国际标准，数据实时更新</p>
+                </div>
+                <div class="highlight-item">
+                    <div class="highlight-icon">🔒</div>
+                    <h3>私有化部署</h3>
+                    <p>支持本地部署和私有化方案，数据安全可控，满足企业内网环境需求</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服务介绍 -->
+    <section class="services" id="services">
+        <h2 class="section-title">专业服务</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-image">📋</div>
+                <div class="service-content">
+                    <h3>标准查询服务</h3>
+                    <p>提供国家标准、行业标准、地方标准等全方位查询服务，支持多条件筛选和全文检索</p>
+                    <a href="search.html" class="service-link">立即查询 →</a>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-image">🤖</div>
+                <div class="service-content">
+                    <h3>AI智能服务</h3>
+                    <p>标准评估、智能编写、标准审校、智能问答，AI技术赋能标准化全流程</p>
+                    <a href="ai-workspace.html" class="service-link">体验AI服务 →</a>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-image">🔍</div>
+                <div class="service-content">
+                    <h3>标准查新查重</h3>
+                    <p>标准查新确保有效性，标准查重保障原创性，专业算法快速准确</p>
+                    <a href="#" class="service-link">了解详情 →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>关于我们</h4>
+                <ul>
+                    <li><a href="#">公司介绍</a></li>
+                    <li><a href="#">联系我们</a></li>
+                    <li><a href="#">加入我们</a></li>
+                    <li><a href="#">新闻动态</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>产品服务</h4>
+                <ul>
+                    <li><a href="#">标准查询</a></li>
+                    <li><a href="#">AI服务</a></li>
+                    <li><a href="#">标准体系</a></li>
+                    <li><a href="#">API接口</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>帮助中心</h4>
+                <ul>
+                    <li><a href="#">使用指南</a></li>
+                    <li><a href="#">常见问题</a></li>
+                    <li><a href="#">API文档</a></li>
+                    <li><a href="#">技术支持</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>法律声明</h4>
+                <ul>
+                    <li><a href="#">服务条款</a></li>
+                    <li><a href="#">隐私政策</a></li>
+                    <li><a href="#">版权声明</a></li>
+                    <li><a href="#">ICP备案</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 标准化智能服务平台. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
+

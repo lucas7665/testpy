@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI工作台 - 标准化智能服务平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        /* 导航栏 */
+        .header {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1890ff;
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .nav-menu a.active {
+            color: #1890ff;
+            font-weight: 500;
+        }
+        
+        /* Banner区 */
+        .workspace-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        
+        .workspace-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .workspace-header h1 {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .workspace-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        /* 主要内容 */
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        /* AI功能卡片网格 */
+        .ai-features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .ai-feature-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 35px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
+        .ai-feature-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border-color: #1890ff;
+            transform: translateY(-5px);
+        }
+        
+        .ai-feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #fff;
+        }
+        
+        .feature-title {
+            flex: 1;
+        }
+        
+        .feature-title h3 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .feature-title p {
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .feature-description {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+        
+        .feature-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #1890ff;
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background: #40a9ff;
+        }
+        
+        .btn-outline {
+            border: 1px solid #e8e8e8;
+            color: #666;
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+        
+        /* 使用统计 */
+        .usage-stats {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .stats-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1890ff;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 历史记录 */
+        .history-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .history-list {
+            list-style: none;
+        }
+        
+        .history-item {
+            padding: 20px;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .history-item:hover {
+            border-color: #1890ff;
+            box-shadow: 0 2px 8px rgba(24,144,255,0.1);
+        }
+        
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .history-type {
+            padding: 4px 12px;
+            background: #e6f7ff;
+            color: #1890ff;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        .history-time {
+            font-size: 13px;
+            color: #999;
+        }
+        
+        .history-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .history-desc {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .view-more {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .view-more a {
+            color: #1890ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">标准化智能服务平台</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="search.html">标准查询</a></li>
+                    <li><a href="ai-workspace.html" class="active">AI服务</a></li>
+                    <li><a href="system.html">标准体系</a></li>
+                    <li><a href="#">标准服务</a></li>
+                    <li><a href="#">关于我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Banner区 -->
+    <section class="workspace-header">
+        <div class="workspace-header-content">
+            <h1>🤖 AI智能工作台</h1>
+            <p>AI驱动的标准化智能服务，让标准工作更高效</p>
+        </div>
+    </section>
+
+    <!-- 主要内容 -->
+    <div class="main-container">
+        <!-- 使用统计 -->
+        <div class="usage-stats">
+            <h2 class="stats-title">本月使用统计</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">标准评估次数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">智能编写次数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">89</div>
+                    <div class="stat-label">标准审校次数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">234</div>
+                    <div class="stat-label">标准问答次数</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI功能卡片 -->
+        <div class="ai-features-grid">
+            <!-- 标准评估 -->
+            <div class="ai-feature-card" onclick="window.location.href='ai-evaluate.html'">
+                <div class="feature-header">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">
+                        <h3>标准评估</h3>
+                        <p>AI自动评估标准质量</p>
+                    </div>
+                </div>
+                <div class="feature-description">
+                    基于AI技术，自动评估标准文档的格式规范性、内容完整性、术语准确性、逻辑一致性等多个维度，生成详细的评估报告和改进建议。
+                </div>
+                <div class="feature-actions">
+                    <a href="ai-evaluate.html" class="btn btn-primary">立即使用</a>
+                    <a href="#" class="btn btn-outline">查看示例</a>
+                </div>
+            </div>
+
+            <!-- 智能编写 -->
+            <div class="ai-feature-card" onclick="window.location.href='ai-write.html'">
+                <div class="feature-header">
+                    <div class="feature-icon">✍️</div>
+                    <div class="feature-title">
+                        <h3>智能编写</h3>
+                        <p>AI辅助生成标准草案</p>
+                    </div>
+                </div>
+                <div class="feature-description">
+                    输入标准基本信息和技术要求，AI自动生成符合国家标准格式的标准草案框架，包含封面、前言、目录、正文等完整结构。
+                </div>
+                <div class="feature-actions">
+                    <a href="ai-write.html" class="btn btn-primary">立即使用</a>
+                    <a href="#" class="btn btn-outline">查看示例</a>
+                </div>
+            </div>
+
+            <!-- 标准审校 -->
+            <div class="ai-feature-card" onclick="window.location.href='ai-review.html'">
+                <div class="feature-header">
+                    <div class="feature-icon">✅</div>
+                    <div class="feature-title">
+                        <h3>标准审校</h3>
+                        <p>AI辅助人工审校</p>
+                    </div>
+                </div>
+                <div class="feature-description">
+                    AI自动检测标准文档中的文字错误、格式问题、编号错误、引用错误等，生成审校报告，大幅提升审校效率和准确性。
+                </div>
+                <div class="feature-actions">
+                    <a href="ai-review.html" class="btn btn-primary">立即使用</a>
+                    <a href="#" class="btn btn-outline">查看示例</a>
+                </div>
+            </div>
+
+            <!-- 标准问答 -->
+            <div class="ai-feature-card" onclick="window.location.href='ai-qa.html'">
+                <div class="feature-header">
+                    <div class="feature-icon">💬</div>
+                    <div class="feature-title">
+                        <h3>标准问答</h3>
+                        <p>基于标准库的智能问答</p>
+                    </div>
+                </div>
+                <div class="feature-description">
+                    基于海量标准知识库，支持标准条款查询、标准对比、标准应用等智能问答，支持多轮对话，快速解答标准化相关问题。
+                </div>
+                <div class="feature-actions">
+                    <a href="ai-qa.html" class="btn btn-primary">立即使用</a>
+                    <a href="#" class="btn btn-outline">查看示例</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 历史记录 -->
+        <div class="history-section">
+            <div class="section-title">
+                <span>最近使用记录</span>
+                <a href="#" style="font-size: 14px; color: #1890ff; text-decoration: none;">查看全部</a>
+            </div>
+            <ul class="history-list">
+                <li class="history-item">
+                    <div class="history-header">
+                        <span class="history-type">标准评估</span>
+                        <span class="history-time">2小时前</span>
+                    </div>
+                    <div class="history-title">GB/T 19001-2016 质量管理体系评估</div>
+                    <div class="history-desc">评估完成，综合得分：92分，发现3处需要改进的问题</div>
+                </li>
+                <li class="history-item">
+                    <div class="history-header">
+                        <span class="history-type">智能编写</span>
+                        <span class="history-time">1天前</span>
+                    </div>
+                    <div class="history-title">企业标准：XX产品质量标准</div>
+                    <div class="history-desc">已生成标准草案框架，包含8个章节，共120页</div>
+                </li>
+                <li class="history-item">
+                    <div class="history-header">
+                        <span class="history-type">标准审校</span>
+                        <span class="history-time">2天前</span>
+                    </div>
+                    <div class="history-title">Q/XXX 001-2024 产品技术规范审校</div>
+                    <div class="history-desc">审校完成，发现12处格式问题，5处文字错误</div>
+                </li>
+                <li class="history-item">
+                    <div class="history-header">
+                        <span class="history-type">标准问答</span>
+                        <span class="history-time">3天前</span>
+                    </div>
+                    <div class="history-title">ISO 9001和GB/T 19001的区别是什么？</div>
+                    <div class="history-desc">已回答，包含标准对比分析和技术差异说明</div>
+                </li>
+            </ul>
+            <div class="view-more">
+                <a href="#">查看更多历史记录 →</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标准查询 - 标准化智能服务平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        /* 导航栏复用首页样式 */
+        .header {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1890ff;
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .nav-menu a.active {
+            color: #1890ff;
+            font-weight: 500;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: #1890ff;
+            color: #fff;
+        }
+        
+        /* 搜索区域 */
+        .search-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            color: #fff;
+        }
+        
+        .search-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .search-header h1 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+        
+        .search-box-large {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .search-input-large {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .search-btn-large {
+            padding: 15px 40px;
+            background: #1890ff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .search-stats {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+        }
+        
+        /* 主要内容区 */
+        .main-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+        }
+        
+        /* 左侧筛选面板 */
+        .sidebar {
+            width: 280px;
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+        
+        .filter-section {
+            margin-bottom: 30px;
+        }
+        
+        .filter-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        .filter-options {
+            list-style: none;
+        }
+        
+        .filter-option {
+            margin-bottom: 10px;
+        }
+        
+        .filter-option label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .filter-option input[type="checkbox"] {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+        }
+        
+        .filter-option-count {
+            margin-left: auto;
+            color: #999;
+            font-size: 12px;
+        }
+        
+        .filter-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .filter-btn {
+            width: 100%;
+            padding: 10px;
+            background: #1890ff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        /* 右侧结果区 */
+        .content-area {
+            flex: 1;
+        }
+        
+        .results-header {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .results-count {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .results-count strong {
+            color: #1890ff;
+            font-size: 18px;
+        }
+        
+        .sort-options {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .sort-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .sort-select {
+            padding: 6px 12px;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        /* 结果列表 */
+        .results-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .result-item {
+            background: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid #e8e8e8;
+        }
+        
+        .result-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-color: #1890ff;
+        }
+        
+        .result-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .result-title {
+            flex: 1;
+        }
+        
+        .result-title h3 {
+            font-size: 18px;
+            color: #1890ff;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .result-title h3:hover {
+            text-decoration: underline;
+        }
+        
+        .result-title p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .result-badge {
+            padding: 4px 12px;
+            background: #e6f7ff;
+            color: #1890ff;
+            border-radius: 12px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        
+        .result-meta {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            font-size: 13px;
+            color: #999;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .result-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .action-btn {
+            padding: 6px 15px;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            background: #fff;
+            color: #666;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+        
+        /* 分页 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 40px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+        }
+        
+        .pagination-btn {
+            padding: 8px 15px;
+            border: 1px solid #e8e8e8;
+            background: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .pagination-btn:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+        
+        .pagination-btn.active {
+            background: #1890ff;
+            color: #fff;
+            border-color: #1890ff;
+        }
+        
+        .pagination-info {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">标准化智能服务平台</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="search.html" class="active">标准查询</a></li>
+                    <li><a href="ai-workspace.html">AI服务</a></li>
+                    <li><a href="system.html">标准体系</a></li>
+                    <li><a href="#">标准服务</a></li>
+                    <li><a href="#">关于我们</a></li>
+                </ul>
+            </nav>
+            <div class="nav-buttons">
+                <a href="#" class="btn btn-outline">登录</a>
+                <a href="#" class="btn btn-primary">免费注册</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 搜索头部 -->
+    <section class="search-header">
+        <div class="search-header-content">
+            <h1>标准查询</h1>
+            <div class="search-box-large">
+                <input type="text" class="search-input-large" placeholder="输入标准号或标准名称，如：GB/T 19001-2016" value="质量管理">
+                <button class="search-btn-large">搜索</button>
+            </div>
+            <div class="search-stats">找到 <strong>1,234</strong> 条相关标准</div>
+        </div>
+    </section>
+
+    <!-- 主要内容 -->
+    <div class="main-container">
+        <!-- 左侧筛选 -->
+        <aside class="sidebar">
+            <div class="filter-section">
+                <div class="filter-title">标准类型</div>
+                <ul class="filter-options">
+                    <li class="filter-option">
+                        <label>
+                            <input type="checkbox" checked>
+                            <span>国家标准（GB）</span>
+                            <span class="filter-option-count">456</span>
+                        </label>
+                    </li>
+                    <li class="filter-option">
+                        <label>
+                            <input type="checkbox">
+                            <span>行业标准</span>
+                            <span class="filter-option-count">623</span>
+                        </label>
+                    </li>
+                    <li class="filter-option">
+                        <label>
+                            <input type="checkbox">
+                            <span>地方标准（DB）</span>
+                            <span class="filter-option-count">155</span>
+                        </label>
+                    </li>
+                    <li class="filter-option">
+                        <label>
+                            <input type="checkbox">
+                            <span>团体标准（T）</span>
+                            <span class="filter-option-count">89</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-title">标准状态</div>
+                <ul class="filter-options">
+                    <li class="filter-option">
+                        <label>
+                            <input type="checkbox" checked>
+                            <span>现行</span>
+                            <span class="filter-option-count">1,089</span>
+                        </label>
+                    </li>
+                    <li class="filter-option">
+                        <label>
+                            <input type="checkbox">
+                            <span>即将实施</span>
+                            <span class="filter-option-count">45</span>
+                        </label>
+                    </li>
+                    <li class="filter-option">
+                        <label>
+                            <input type="checkbox">
+                            <span>废止</span>
+                            <span class="filter-option-count">100</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-title">发布年份</div>
+                <input type="text" class="filter-input" placeholder="起始年份">
+                <input type="text" class="filter-input" placeholder="结束年份">
+                <button class="filter-btn">确定</button>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-title">发布机构</div>
+                <ul class="filter-options">
+                    <li class="filter-option">
+                        <label>
+                            <input type="checkbox">
+                            <span>国家市场监督管理总局</span>
+                        </label>
+                    </li>
+                    <li class="filter-option">
+                        <label>
+                            <input type="checkbox">
+                            <span>国家标准化管理委员会</span>
+                        </label>
+                    </li>
+                    <li class="filter-option">
+                        <label>
+                            <input type="checkbox">
+                            <span>工业和信息化部</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- 右侧结果 -->
+        <main class="content-area">
+            <div class="results-header">
+                <div class="results-count">
+                    共找到 <strong>1,234</strong> 条标准，显示第 1-20 条
+                </div>
+                <div class="sort-options">
+                    <span class="sort-label">排序：</span>
+                    <select class="sort-select">
+                        <option>相关度</option>
+                        <option>发布时间（最新）</option>
+                        <option>发布时间（最早）</option>
+                        <option>标准号</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="results-list">
+                <!-- 结果项1 -->
+                <div class="result-item" onclick="window.location.href='detail.html'">
+                    <div class="result-header-row">
+                        <div class="result-title">
+                            <h3>GB/T 19001-2016 质量管理体系 要求</h3>
+                            <p>本标准规定了质量管理体系的要求，组织需要证实其有能力稳定地提供满足顾客要求和适用法律法规要求的产品和服务，通过体系的有效应用，包括体系持续改进的过程以及保证符合顾客要求和适用的法律法规要求，旨在增强顾客满意。</p>
+                        </div>
+                        <span class="result-badge">国家标准</span>
+                    </div>
+                    <div class="result-meta">
+                        <div class="result-meta-item">
+                            <span>📅</span>
+                            <span>发布日期：2016-12-30</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>✅</span>
+                            <span>实施日期：2017-07-01</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>🏢</span>
+                            <span>发布机构：国家质检总局</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>📊</span>
+                            <span>状态：现行</span>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <a href="detail.html" class="action-btn">查看详情</a>
+                        <a href="#" class="action-btn">收藏</a>
+                        <a href="#" class="action-btn">下载</a>
+                        <a href="#" class="action-btn">对比</a>
+                    </div>
+                </div>
+
+                <!-- 结果项2 -->
+                <div class="result-item">
+                    <div class="result-header-row">
+                        <div class="result-title">
+                            <h3>GB/T 24001-2016 环境管理体系 要求及使用指南</h3>
+                            <p>本标准规定了组织能够用来提升其环境绩效的环境管理体系要求。本标准可供寻求以系统的方式管理其环境责任的组织使用，从而为可持续发展的环境支柱做出贡献。</p>
+                        </div>
+                        <span class="result-badge">国家标准</span>
+                    </div>
+                    <div class="result-meta">
+                        <div class="result-meta-item">
+                            <span>📅</span>
+                            <span>发布日期：2016-10-13</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>✅</span>
+                            <span>实施日期：2017-05-01</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>🏢</span>
+                            <span>发布机构：国家质检总局</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>📊</span>
+                            <span>状态：现行</span>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <a href="detail.html" class="action-btn">查看详情</a>
+                        <a href="#" class="action-btn">收藏</a>
+                        <a href="#" class="action-btn">下载</a>
+                        <a href="#" class="action-btn">对比</a>
+                    </div>
+                </div>
+
+                <!-- 结果项3 -->
+                <div class="result-item">
+                    <div class="result-header-row">
+                        <div class="result-title">
+                            <h3>GB/T 45001-2020 职业健康安全管理体系 要求及使用指南</h3>
+                            <p>本标准规定了对职业健康安全管理体系的要求，旨在使组织能够提供安全和健康的工作场所，防止与工作相关的伤害和健康损害，并主动改进其职业健康安全绩效。</p>
+                        </div>
+                        <span class="result-badge">国家标准</span>
+                    </div>
+                    <div class="result-meta">
+                        <div class="result-meta-item">
+                            <span>📅</span>
+                            <span>发布日期：2020-03-06</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>✅</span>
+                            <span>实施日期：2020-04-01</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>🏢</span>
+                            <span>发布机构：国家市场监督管理总局</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>📊</span>
+                            <span>状态：现行</span>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <a href="detail.html" class="action-btn">查看详情</a>
+                        <a href="#" class="action-btn">收藏</a>
+                        <a href="#" class="action-btn">下载</a>
+                        <a href="#" class="action-btn">对比</a>
+                    </div>
+                </div>
+
+                <!-- 结果项4 -->
+                <div class="result-item">
+                    <div class="result-header-row">
+                        <div class="result-title">
+                            <h3>GB/T 27021-2017 合格评定 管理体系审核认证机构要求</h3>
+                            <p>本标准规定了对管理体系审核与认证机构的要求，以提供对认证机构的认可。</p>
+                        </div>
+                        <span class="result-badge">国家标准</span>
+                    </div>
+                    <div class="result-meta">
+                        <div class="result-meta-item">
+                            <span>📅</span>
+                            <span>发布日期：2017-11-01</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>✅</span>
+                            <span>实施日期：2018-06-01</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>🏢</span>
+                            <span>发布机构：国家质检总局</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>📊</span>
+                            <span>状态：现行</span>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <a href="detail.html" class="action-btn">查看详情</a>
+                        <a href="#" class="action-btn">收藏</a>
+                        <a href="#" class="action-btn">下载</a>
+                        <a href="#" class="action-btn">对比</a>
+                    </div>
+                </div>
+
+                <!-- 结果项5 -->
+                <div class="result-item">
+                    <div class="result-header-row">
+                        <div class="result-title">
+                            <h3>GB/T 19000-2016 质量管理体系 基础和术语</h3>
+                            <p>本标准阐述了质量管理体系的基本概念和原则，并规定了质量管理体系的术语。</p>
+                        </div>
+                        <span class="result-badge">国家标准</span>
+                    </div>
+                    <div class="result-meta">
+                        <div class="result-meta-item">
+                            <span>📅</span>
+                            <span>发布日期：2016-12-30</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>✅</span>
+                            <span>实施日期：2017-07-01</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>🏢</span>
+                            <span>发布机构：国家质检总局</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <span>📊</span>
+                            <span>状态：现行</span>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <a href="detail.html" class="action-btn">查看详情</a>
+                        <a href="#" class="action-btn">收藏</a>
+                        <a href="#" class="action-btn">下载</a>
+                        <a href="#" class="action-btn">对比</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分页 -->
+            <div class="pagination">
+                <button class="pagination-btn">上一页</button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn">4</button>
+                <button class="pagination-btn">5</button>
+                <span class="pagination-info">...</span>
+                <button class="pagination-btn">62</button>
+                <button class="pagination-btn">下一页</button>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+

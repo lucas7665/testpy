@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GB/T 19001-2016 质量管理体系 要求 - 标准详情</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.8;
+        }
+        
+        /* 导航栏 */
+        .header {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1890ff;
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #1890ff;
+            color: #fff;
+        }
+        
+        /* 面包屑 */
+        .breadcrumb {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #1890ff;
+            text-decoration: none;
+        }
+        
+        /* 主要内容 */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 30px;
+        }
+        
+        /* 左侧内容区 */
+        .content-main {
+            flex: 1;
+            background: #fff;
+            border-radius: 8px;
+            padding: 40px;
+        }
+        
+        .standard-header {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .standard-number {
+            font-size: 28px;
+            color: #1890ff;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .standard-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .standard-title-en {
+            font-size: 18px;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .standard-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .info-label {
+            min-width: 100px;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .info-value {
+            color: #333;
+            font-size: 14px;
+            flex: 1;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #e6f7ff;
+            color: #1890ff;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        
+        .badge-success {
+            background: #f6ffed;
+            color: #52c41a;
+        }
+        
+        /* 操作按钮 */
+        .action-bar {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 8px;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .action-btn-primary {
+            background: #1890ff;
+            color: #fff;
+        }
+        
+        .action-btn-outline {
+            border: 1px solid #1890ff;
+            color: #1890ff;
+            background: transparent;
+        }
+        
+        .action-btn-outline:hover {
+            background: #1890ff;
+            color: #fff;
+        }
+        
+        /* 标签页 */
+        .tabs {
+            margin-top: 30px;
+        }
+        
+        .tabs-nav {
+            display: flex;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+        
+        .tab-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            color: #666;
+            font-size: 16px;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .tab-item.active {
+            color: #1890ff;
+            font-weight: 500;
+        }
+        
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #1890ff;
+        }
+        
+        .tab-content {
+            display: none;
+            min-height: 400px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* 标准摘要 */
+        .abstract {
+            line-height: 1.8;
+            color: #666;
+            font-size: 15px;
+        }
+        
+        /* 目录 */
+        .toc {
+            list-style: none;
+        }
+        
+        .toc li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .toc a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .toc a:hover {
+            color: #1890ff;
+        }
+        
+        /* PDF预览区 */
+        .pdf-viewer {
+            width: 100%;
+            height: 800px;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 16px;
+        }
+        
+        /* 关联标准 */
+        .related-standards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .related-item {
+            padding: 15px;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .related-item:hover {
+            border-color: #1890ff;
+            box-shadow: 0 2px 8px rgba(24,144,255,0.1);
+        }
+        
+        .related-item a {
+            color: #1890ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        /* 右侧边栏 */
+        .sidebar {
+            width: 300px;
+        }
+        
+        .sidebar-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .quick-actions {
+            list-style: none;
+        }
+        
+        .quick-actions li {
+            margin-bottom: 12px;
+        }
+        
+        .quick-actions a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.3s;
+        }
+        
+        .quick-actions a:hover {
+            color: #1890ff;
+        }
+        
+        .download-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .download-box h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .download-box p {
+            margin-bottom: 20px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .download-btn {
+            display: block;
+            padding: 12px;
+            background: #fff;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: transform 0.3s;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">标准化智能服务平台</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="search.html">标准查询</a></li>
+                    <li><a href="ai-workspace.html">AI服务</a></li>
+                    <li><a href="system.html">标准体系</a></li>
+                    <li><a href="#">标准服务</a></li>
+                    <li><a href="#">关于我们</a></li>
+                </ul>
+            </nav>
+            <div class="nav-buttons">
+                <a href="#" class="btn btn-outline">登录</a>
+                <a href="#" class="btn btn-primary">免费注册</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 面包屑 -->
+    <div class="breadcrumb">
+        <a href="index.html">首页</a> > 
+        <a href="search.html">标准查询</a> > 
+        <span>GB/T 19001-2016</span>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="main-container">
+        <!-- 左侧内容 -->
+        <main class="content-main">
+            <!-- 标准头部信息 -->
+            <div class="standard-header">
+                <div class="standard-number">GB/T 19001-2016</div>
+                <h1 class="standard-title">质量管理体系 要求</h1>
+                <div class="standard-title-en">Quality management systems — Requirements</div>
+                
+                <div class="standard-info-grid">
+                    <div class="info-item">
+                        <span class="info-label">标准类型：</span>
+                        <span class="info-value">
+                            <span class="badge">国家标准</span>
+                            <span class="badge badge-success">现行</span>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">发布日期：</span>
+                        <span class="info-value">2016-12-30</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">实施日期：</span>
+                        <span class="info-value">2017-07-01</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">发布机构：</span>
+                        <span class="info-value">中华人民共和国国家质量监督检验检疫总局<br>中国国家标准化管理委员会</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">归口单位：</span>
+                        <span class="info-value">全国质量管理和质量保证标准化技术委员会</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">ICS分类：</span>
+                        <span class="info-value">03.120.10</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">CCS分类：</span>
+                        <span class="info-value">A 00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">代替标准：</span>
+                        <span class="info-value">GB/T 19001-2008</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 操作栏 -->
+            <div class="action-bar">
+                <a href="#" class="action-btn action-btn-primary">下载PDF</a>
+                <a href="#" class="action-btn action-btn-outline">收藏</a>
+                <a href="#" class="action-btn action-btn-outline">分享</a>
+                <a href="#" class="action-btn action-btn-outline">对比</a>
+                <a href="#" class="action-btn action-btn-outline">AI评估</a>
+            </div>
+
+            <!-- 标签页 -->
+            <div class="tabs">
+                <div class="tabs-nav">
+                    <div class="tab-item active" onclick="switchTab(0)">标准摘要</div>
+                    <div class="tab-item" onclick="switchTab(1)">标准目录</div>
+                    <div class="tab-item" onclick="switchTab(2)">标准全文</div>
+                    <div class="tab-item" onclick="switchTab(3)">关联标准</div>
+                </div>
+
+                <!-- 标准摘要 -->
+                <div class="tab-content active">
+                    <div class="abstract">
+                        <h3 style="margin-bottom: 15px; color: #333;">标准摘要</h3>
+                        <p style="margin-bottom: 15px;">
+                            本标准规定了质量管理体系的要求，组织需要证实其有能力稳定地提供满足顾客要求和适用法律法规要求的产品和服务，通过体系的有效应用，包括体系持续改进的过程以及保证符合顾客要求和适用的法律法规要求，旨在增强顾客满意。
+                        </p>
+                        <p style="margin-bottom: 15px;">
+                            本标准规定的所有要求是通用的，旨在适用于各种类型、不同规模和提供不同产品和服务的组织。
+                        </p>
+                        <p style="margin-bottom: 15px;">
+                            注1：在本标准中，术语"产品"或"服务"仅适用于预期提供给顾客或顾客所要求的产品和服务。
+                        </p>
+                        <p style="margin-bottom: 15px;">
+                            注2：法律法规要求可称作法定要求。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 标准目录 -->
+                <div class="tab-content">
+                    <h3 style="margin-bottom: 20px; color: #333;">标准目录</h3>
+                    <ul class="toc">
+                        <li><a href="#">前言 <span>III</span></a></li>
+                        <li><a href="#">引言 <span>IV</span></a></li>
+                        <li><a href="#">1 范围 <span>1</span></a></li>
+                        <li><a href="#">2 规范性引用文件 <span>2</span></a></li>
+                        <li><a href="#">3 术语和定义 <span>2</span></a></li>
+                        <li><a href="#">4 组织环境 <span>3</span></a></li>
+                        <li><a href="#">4.1 理解组织及其环境 <span>3</span></a></li>
+                        <li><a href="#">4.2 理解相关方的需求和期望 <span>3</span></a></li>
+                        <li><a href="#">4.3 确定质量管理体系的范围 <span>4</span></a></li>
+                        <li><a href="#">4.4 质量管理体系及其过程 <span>4</span></a></li>
+                        <li><a href="#">5 领导作用 <span>5</span></a></li>
+                        <li><a href="#">5.1 领导作用和承诺 <span>5</span></a></li>
+                        <li><a href="#">5.2 方针 <span>6</span></a></li>
+                        <li><a href="#">5.3 组织的岗位、职责和权限 <span>7</span></a></li>
+                        <li><a href="#">6 策划 <span>7</span></a></li>
+                        <li><a href="#">7 支持 <span>9</span></a></li>
+                        <li><a href="#">8 运行 <span>11</span></a></li>
+                        <li><a href="#">9 绩效评价 <span>14</span></a></li>
+                        <li><a href="#">10 改进 <span>16</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- 标准全文 -->
+                <div class="tab-content">
+                    <h3 style="margin-bottom: 20px; color: #333;">标准全文预览</h3>
+                    <div class="pdf-viewer">
+                        <div>
+                            <div style="font-size: 48px; margin-bottom: 20px;">📄</div>
+                            <div>标准全文预览</div>
+                            <div style="margin-top: 10px; font-size: 14px;">点击下载按钮下载完整PDF文档</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 关联标准 -->
+                <div class="tab-content">
+                    <h3 style="margin-bottom: 20px; color: #333;">关联标准</h3>
+                    <div class="related-standards">
+                        <div class="related-item">
+                            <div style="font-weight: 500; margin-bottom: 8px;">被替代标准</div>
+                            <a href="#">GB/T 19001-2008 质量管理体系 要求</a>
+                        </div>
+                        <div class="related-item">
+                            <div style="font-weight: 500; margin-bottom: 8px;">引用标准</div>
+                            <a href="#">GB/T 19000-2016 质量管理体系 基础和术语</a>
+                        </div>
+                        <div class="related-item">
+                            <div style="font-weight: 500; margin-bottom: 8px;">相关标准</div>
+                            <a href="#">GB/T 19004-2011 追求组织的持续成功 质量管理方法</a>
+                        </div>
+                        <div class="related-item">
+                            <div style="font-weight: 500; margin-bottom: 8px;">相关标准</div>
+                            <a href="#">GB/T 19011-2021 管理体系审核指南</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 右侧边栏 -->
+        <aside class="sidebar">
+            <!-- 快速操作 -->
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">快速操作</h3>
+                <ul class="quick-actions">
+                    <li><a href="#"><span>⭐</span> 收藏标准</a></li>
+                    <li><a href="#"><span>📥</span> 下载标准</a></li>
+                    <li><a href="#"><span>🤖</span> AI评估</a></li>
+                    <li><a href="#"><span>📊</span> 查看体系</a></li>
+                    <li><a href="#"><span>🔍</span> 标准查新</a></li>
+                    <li><a href="#"><span>📝</span> 添加笔记</a></li>
+                </ul>
+            </div>
+
+            <!-- 下载专区 -->
+            <div class="sidebar-card">
+                <div class="download-box">
+                    <h3>下载标准文档</h3>
+                    <p>PDF格式，高清版本</p>
+                    <a href="#" class="download-btn">立即下载</a>
+                </div>
+            </div>
+
+            <!-- 标准统计 -->
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">标准统计</h3>
+                <div style="margin-bottom: 15px;">
+                    <div style="color: #999; font-size: 13px; margin-bottom: 5px;">浏览量</div>
+                    <div style="font-size: 20px; color: #1890ff; font-weight: 600;">12,456</div>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <div style="color: #999; font-size: 13px; margin-bottom: 5px;">收藏量</div>
+                    <div style="font-size: 20px; color: #1890ff; font-weight: 600;">1,234</div>
+                </div>
+                <div>
+                    <div style="color: #999; font-size: 13px; margin-bottom: 5px;">下载量</div>
+                    <div style="font-size: 20px; color: #1890ff; font-weight: 600;">8,901</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.tab-item');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach((tab, i) => {
+                if (i === index) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            contents.forEach((content, i) => {
+                if (i === index) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
